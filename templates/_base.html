@@ -1,0 +1,46 @@
+{# TODO: insert the HTML code from initial_design.html and convert it to a template #}
+{# Hint: use jinja blocks #}
+
+{# Note: this is a comment ;) #}
+
+<!DOCTYPE html>
+<html>
+<head>
+    {% block head %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link href="./public/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Website CSS -->
+    <link rel="stylesheet" type="text/css" href="./public/style.css">
+
+    <!-- <title>Lab 03 - Advanced Web</title> -->
+    <title>{% block title %}{% endblock %}</title>
+    {% endblock %}
+
+</head>
+
+<body>
+  <header class="site-header">
+    {% block header_content %}
+    {% endblock %}
+  </header>
+
+  <!-- Main container follows (with main content + right sidebar) -->
+  <main role="main" class="container">
+    {% block main_content %}
+    {% endblock %}
+  </main>
+
+  {% block content %}
+  {% endblock %}
+
+  {% block javascript %}
+  {% endblock %}
+
+  <!-- Include Bootstrap script -->
+  <script src="./public/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

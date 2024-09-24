@@ -1,0 +1,37 @@
+{% extends '_base.html' %}
+{% block content %}
+<!-- Section: Design Block -->
+<section class="text-center">
+  <!-- Background image -->
+  <div class="p-5 bg-image" style="background-image: url('https://mdbootstrap.com/img/new/textures/full/171.jpg'); height: 300px;"></div>
+  <!-- Background image -->
+
+  <div class="card mx-4 mx-md-5 shadow-5-strong bg-body-tertiary" style="margin-top: -100px; backdrop-filter: blur(30px);">
+    <div class="card-body py-5 px-md-5">
+      <div class="row d-flex justify-content-center">
+        <div class="col-lg-8">
+          <h2 class="fw-bold mb-5">Login</h2>
+
+          <form method="post" class="login-form">
+            {% if error_msg %}
+            <div style="color: red;">{{ error_msg }}</div>
+            {% endif %}
+            <div class="mb-3">
+              <label for="username" class="form-label">Username</label>
+              <input type="text" class="form-control" name="username" id="username">
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" class="form-control" name="password" id="password">
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+            <button class="btn btn-secondary"><a href="/">Back</a></button>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Section: Design Block -->
+{% endblock %}

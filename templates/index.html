@@ -1,0 +1,51 @@
+{% extends '_base.html' %}
+
+{% block title %}Lab 03 - Advanced Web{% endblock %}
+
+{% block header_content %}
+<div class="container">
+  <div id="header-image"></div>
+</div>
+
+<nav class="navbar navbar-expand-md navbar-dark">
+  <div class="container">
+    <a class="navbar-brand mr-4" href="/">{{ username }}</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarToggle">
+      <div class="navbar-nav mr-auto">
+        <a class="nav-item nav-link active" href="/">Home</a>
+        <a class="nav-item nav-link" href="/second">Second</a>
+        <a class="nav-item nav-link" href="/third">About</a>
+        <a class="nav-item nav-link" href="/account-details">Add Photo</a>
+      </div>
+      <div class="navbar-nav">
+        <a class="nav-item nav-link" href="/login">Login</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="row">
+    {% for image in images %}
+    {% set category, filename = image.split('/', 1) %}
+      <div class="col-md-3 mb-3">
+        <p style="color: aliceblue;">Category: {{ category }}</p>
+        <a href="{{ url_for('static', filename='images/profile/' ~ image) }}" target="_blank">
+            <img src="{{ url_for('static', filename='images/profile/' ~ image) }}" alt="Profile Image" class="img-thumbnail" />
+        </a>
+        {% if authenticated and username == 'admin' %}
+          <form method="post" action="{{ url_for('delete_image') }}">
+            <input type="hidden" name="image_filename" value="{{ image }}">
+            <button type="submit" class="btn btn-danger btn-sm mt-2">Delete</button>
+          </form>
+        {% endif %}
+        <form method="post" action="{{ url_for('modify_image', image_filename=image) }}">
+          <input type="hidden" name="image_filename" value="{{ image }}">
+          <button type="submit" class="btn btn-primary btn-sm mt-2">Modify</button>
+        </form>
+      </div>
+    {% endfor %}
+</div>
+{% endblock %}

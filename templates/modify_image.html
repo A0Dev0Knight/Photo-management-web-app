@@ -1,0 +1,63 @@
+{% extends '_base.html' %}
+
+{% block title %}Modify Image{% endblock %}
+
+{% block main_content %}
+<div class="container">
+    <h1>Modify Image</h1>
+    <p>You are modifying the image: {{ image_filename }}</p>
+    
+    <!-- Image Preview -->
+    <div>
+        <img id="image-preview" src="{{ url_for('static', filename='images/profile/' ~ image_filename) }}" alt="Image" class="img-thumbnail" />
+    </div>
+    
+    <!-- Contrast Slider -->
+    <div>
+        <label for="contrast-slider">Adjust Contrast:</label>
+        <input type="range" id="contrast-slider" name="contrast" min="0" max="200" value="100">
+    </div>
+    
+    <button id="save-button" class="btn btn-primary">Save Changes</button>
+    <button class="btn btn-secondary"><a href="/">Back</a></button>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+document.getElementById('contrast-slider').addEventListener('input', function() {
+    var contrastValue = this.value;
+    var imagePreview = document.getElementById('image-preview');
+    var imageUrl = "{{ url_for('modify_image_preview', image_filename=image_filename) }}";
+    
+    // Send AJAX request to get modified image preview
+    fetch(`${imageUrl}?contrast=${contrastValue}`)
+        .then(response => response.blob())
+        .then(blob => {
+            imagePreview.src = URL.createObjectURL(blob);
+        });
+});
+
+document.getElementById('save-button').addEventListener('click', function() {
+    var contrastValue = document.getElementById('contrast-slider').value;
+    var imageUrl = "{{ url_for('save_modified_image', image_filename=image_filename) }}";
+    
+    // Send AJAX request to save modified image
+    fetch(imageUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ contrast: contrastValue })
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('Image saved successfully');
+        } else {
+            alert('Failed to save image');
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends '_base.html' %}
+
+{% block content %}
+<!-- Section: Design Block -->
+<section class="text-center">
+  <!-- Background image -->
+  <div class="p-5 bg-image" style="background-image: url('https://mdbootstrap.com/img/new/textures/full/171.jpg'); height: 300px;"></div>
+  <!-- Background image -->
+
+  <div class="card mx-4 mx-md-5 shadow-5-strong bg-body-tertiary" style="margin-top: -100px; backdrop-filter: blur(30px);">
+    <div class="card-body py-5 px-md-5">
+      <div class="row d-flex justify-content-center">
+        <div class="col-lg-8">
+          <h2 class="fw-bold mb-5">My Account</h2>
+          {% if authenticated and username != 'guest' %}
+            <form method="post" enctype="multipart/form-data">
+              <!-- 2 column grid layout with text inputs for the first and last names -->
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <div class="form-outline">
+                    <input type="text" id="first_name" name="first_name" class="form-control" value="{{ first_name }}" />
+                    <label class="form-label" for="first_name">First name</label>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                  <div class="form-outline">
+                    <input type="text" id="last_name" name="last_name" class="form-control" value="{{ last_name }}" />
+                    <label class="form-label" for="last_name">Last name</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-outline mb-4">
+                <input type="text" id="age" name="age" class="form-control" value="{{ age }}" />
+                <label class="form-label" for="age">Age</label>
+              </div>
+
+              <div class="form-outline mb-4">
+                <input type="text" id="title" name="title" class="form-control" value="{{ title }}" />
+                <label class="form-label" for="title">Title</label>
+              </div>
+
+              <div class="form-outline mb-4">
+                <input type="text" id="description" name="description" class="form-control" value="{{ description }}" />
+                <label class="form-label" for="description">Description</label>
+              </div>
+
+              <div class="form-outline mb-4">
+                <input type="file" id="profile_images" name="profile_images" class="form-control" multiple />
+                <label class="form-label" for="profile_images">Profile Images</label>
+              </div>
+              
+              <div class="form-outline mb-4">
+                <label for="category" class="form-label">Category</label>
+                <select id="category" name="category" class="form-control">
+                  <option value="Family">Family</option>
+                  <option value="Work">Work</option>
+                  <option value="Travel">Travel</option>
+                </select>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-block mb-4">Save</button>
+              <button class="btn btn-secondary btn-block mb-4"><a href="/">Back</a></button>
+            </form>
+          {% endif %}
+          
+                    <div class="row">
+            {% for category, images in images %}
+              <div class="col-12">
+                <h3>{{ category | capitalize }}</h3>
+                <div class="row">
+                  {% for image in images %}
+                    <div class="col-md-3 mb-3">
+                      <a href="{{ url_for('static', filename='images/profile/' ~ image) }}" target="_blank">
+                        <img src="{{ url_for('static', filename='images/profile/' ~ image) }}" alt="Profile Image" class="img-thumbnail" />
+                      </a>
+                      {% if authenticated and username == 'admin' %}
+                        <form method="post" action="{{ url_for('delete_image') }}">
+                          <input type="hidden" name="image_filename" value="{{ image }}">
+                          <button type="submit" class="btn btn-danger btn-sm mt-2">Delete</button>
+                        </form>
+                      {% endif %}
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Section: Design Block -->
+{% endblock %}
